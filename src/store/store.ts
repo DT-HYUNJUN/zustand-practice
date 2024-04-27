@@ -4,7 +4,7 @@ export interface ITodo {
   id: number;
   todo: string;
   isDone: boolean;
-  date: string;
+  date: number;
 }
 
 interface TodoState {
@@ -17,15 +17,16 @@ interface TodoState {
 }
 
 const useTodoStore = create<TodoState>((set, get) => ({
-  todoList: [{ id: 0, todo: "first todo", isDone: true, date: "4-26" }],
+  todoList: [{ id: new Date().getTime(), todo: "first todo", isDone: true, date: new Date().getTime() }],
   selectedDate: new Date(),
   addTodo: (newTodoText: string, selectedDate: Date) => {
-    const newId = get().todoList.length;
+    // const newId = get().todoList.length;
+    const newId = selectedDate.getTime();
     const newTodo: ITodo = {
       id: newId,
       todo: newTodoText,
       isDone: false,
-      date: `${selectedDate.getMonth() + 1}-${selectedDate.getDate()}`,
+      date: selectedDate.getTime(),
     };
     set((state) => ({ todoList: [...state.todoList, newTodo] }));
     console.log(get().todoList);
