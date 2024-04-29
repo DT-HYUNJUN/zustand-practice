@@ -8,8 +8,6 @@ const TodoCalendar = () => {
 
   const updateDate = useTodoStore((state) => state.updateDate);
 
-  const today = new Date();
-
   const handleClickToday = () => {
     setDate(new Date());
   };
@@ -22,7 +20,7 @@ const TodoCalendar = () => {
     <div className="flex flex-col gap-2">
       <div className="flex justify-end">
         <Button onClick={handleClickToday} variant="outline" size="today">
-          {today.getDate()}
+          {new Date().getDate()}
         </Button>
       </div>
       <Calendar mode="single" selected={date} onSelect={setDate} className="rounded-md border" />
