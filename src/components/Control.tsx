@@ -3,8 +3,7 @@ import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import useTodoStore from "@/store/store";
 import { useState } from "react";
-import { convertToMMDD } from "@/utils/convertToMMDD";
-// import { convertToMMDD } from "../utils/convertToMMDD";
+import { convertToMMDD } from "@/utils/formatDate";
 
 const Control = () => {
   const [newTodoText, setNewTodoText] = useState("");
@@ -14,7 +13,7 @@ const Control = () => {
 
   const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
-    newTodoText && addTodo(newTodoText, selectedDate);
+    newTodoText && addTodo(newTodoText);
     setNewTodoText("");
   };
 
@@ -25,7 +24,7 @@ const Control = () => {
         className="rounded-full h-full"
         value={newTodoText}
         onChange={(e) => setNewTodoText(e.target.value)}
-        placeholder={`${typeof selectedDate === "object" && convertToMMDD(selectedDate, true)}일에 일정 추가`}
+        placeholder={`${typeof selectedDate === "object" && convertToMMDD(selectedDate, true)}에 일정 추가`}
       />
       <div>
         <Button className="rounded-full shadow-xl w-12 h-12" variant="outline" size="icon">

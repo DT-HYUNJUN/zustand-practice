@@ -1,5 +1,8 @@
+import { convertToYMD } from "@/utils/formatDate";
 import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
+
+const data = { "2024-05-01": [{ id: 0, todo: "first todo", isDone: true, date: new Date().getTime() }] };
 
 export interface ITodo {
   id: number;
@@ -7,67 +10,62 @@ export interface ITodo {
   isDone: boolean;
   date: number;
 }
+interface ITodoDate {
+  [key: string]: ITodo[];
+}
 
 interface TodoState {
-  todoList: ITodo[];
+  todoList: ITodoDate;
   selectedDate: Date;
-  addTodo: (newTodoText: string, selectedDate: Date) => void;
+  addTodo: (newTodoText: string) => void;
   removeTodo: (id: number) => void;
   checkTodo: (id: number) => void;
   updateDate: (clickedDate: Date) => void;
 }
 
-// const useTodoStore = create<TodoState>((set, get) => ({
-//   todoList: [{ id: new Date().getTime(), todo: "first todo", isDone: true, date: new Date().getTime() }],
-//   selectedDate: new Date(),
-//   addTodo: (newTodoText: string, selectedDate: Date) => {
-//     const newId = get().todoList.length;
-//     const newTodo: ITodo = {
-//       id: newId,
-//       todo: newTodoText,
-//       isDone: false,
-//       date: selectedDate.getTime(),
-//     };
-//     set((state) => ({ todoList: [...state.todoList, newTodo] }));
-//     console.log(get().todoList);
-//   },
-//   removeTodo: (id) => set((state) => ({ todoList: state.todoList.filter((todo) => todo.id !== id) })),
-//   checkTodo: (id) => {
-//     const updatedTodo = {
-//       ...get().todoList[id],
-//       isDone: !get().todoList[id].isDone,
-//     };
-//     get().todoList[id] = updatedTodo;
-//     set((state) => ({ todoList: state.todoList }));
-//     console.log(get().todoList);
-//   },
-//   updateDate: (clickedDate) => set(() => ({ selectedDate: clickedDate })),
-// }));
-
 const useTodoStore = create<TodoState>()(
   devtools(
     persist(
       (set, get) => ({
-        todoList: [{ id: 0, todo: "first todo", isDone: true, date: new Date().getTime() }],
+        todoList: data,
         selectedDate: new Date(),
-        addTodo: (newTodoText: string, selectedDate: Date) => {
-          const newId = get().todoList.length;
+        addTodo: (newTodoText: string) => {
+          const formattedDate = convertToYMD(get().selectedDate);
           const newTodo: ITodo = {
-            id: newId,
+            id: get().todoList[formattedDate] ? get().todoList[formattedDate].length : 0,
             todo: newTodoText,
             isDone: false,
-            date: selectedDate.getTime(),
+            date: get().selectedDate.getTime(),
           };
-          set((state) => ({ todoList: [...state.todoList, newTodo] }));
+
+          let newTodoListDate = [];
+
+          if (get().todoList[formattedDate]) {
+            newTodoListDate = [...get().todoList[formattedDate], newTodo];
+          } else {
+            newTodoListDate = [newTodo];
+          }
+          const final = get().todoList;
+          final[formattedDate] = newTodoListDate;
+          set(() => ({ todoList: final }));
+
           console.log(get().todoList);
         },
-        removeTodo: (id) => set((state) => ({ todoList: state.todoList.filter((todo) => todo.id !== id) })),
+        // removeTodo: (id) => set((state) => ({ todoList: state.todoList.filter((todo) => todo.id !== id) })),
+        removeTodo: (id) => {
+          const fDate = convertToYMD(get().selectedDate);
+          const removedTodo = get().todoList[fDate].filter((todo) => todo.id !== id);
+          get().todoList[fDate] = removedTodo;
+          set((state) => ({ todoList: state.todoList }));
+          console.log(get().todoList[fDate]);
+        },
         checkTodo: (id) => {
+          const fDate = convertToYMD(get().selectedDate);
           const updatedTodo = {
-            ...get().todoList[id],
-            isDone: !get().todoList[id].isDone,
+            ...get().todoList[fDate][id],
+            isDone: !get().todoList[fDate][id].isDone,
           };
-          get().todoList[id] = updatedTodo;
+          get().todoList[fDate][id] = updatedTodo;
           set((state) => ({ todoList: state.todoList }));
           console.log(get().todoList);
         },

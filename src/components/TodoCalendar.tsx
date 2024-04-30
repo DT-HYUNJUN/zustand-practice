@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { Calendar } from "./ui/calendar";
 import useTodoStore from "@/store/store";
+import { ko } from "date-fns/locale";
 import { Button } from "./ui/button";
 
 const TodoCalendar = () => {
@@ -8,22 +9,18 @@ const TodoCalendar = () => {
 
   const updateDate = useTodoStore((state) => state.updateDate);
 
-  const handleClickToday = () => {
-    setDate(new Date());
-  };
-
   useEffect(() => {
     date && updateDate(date);
   }, [date]);
 
   return (
-    <div className="flex flex-col gap-2">
-      <div className="flex justify-end">
-        <Button onClick={handleClickToday} variant="outline" size="today">
+    <div>
+      <div className="text-end mb-2">
+        <Button onClick={() => setDate(new Date())} variant="outline" size="today">
           {new Date().getDate()}
         </Button>
       </div>
-      <Calendar mode="single" selected={date} onSelect={setDate} className="rounded-md border" />
+      <Calendar mode="single" selected={date} onSelect={setDate} locale={ko} className="rounded-md border" />
     </div>
   );
 };
