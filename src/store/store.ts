@@ -37,9 +37,7 @@ const useTodoStore = create<TodoState>()(
             isDone: false,
             date: get().selectedDate.getTime(),
           };
-
           let newTodoListDate = [];
-
           if (get().todoList[formattedDate]) {
             newTodoListDate = [...get().todoList[formattedDate], newTodo];
           } else {
@@ -51,7 +49,6 @@ const useTodoStore = create<TodoState>()(
 
           console.log(get().todoList);
         },
-        // removeTodo: (id) => set((state) => ({ todoList: state.todoList.filter((todo) => todo.id !== id) })),
         removeTodo: (id) => {
           const fDate = convertToYMD(get().selectedDate);
           const removedTodo = get().todoList[fDate].filter((todo) => todo.id !== id);
@@ -61,13 +58,14 @@ const useTodoStore = create<TodoState>()(
         },
         checkTodo: (id) => {
           const fDate = convertToYMD(get().selectedDate);
+          const targetId = get().todoList[fDate].findIndex((todo) => todo.id === id);
           const updatedTodo = {
-            ...get().todoList[fDate][id],
-            isDone: !get().todoList[fDate][id].isDone,
+            ...get().todoList[fDate][targetId],
+            isDone: !get().todoList[fDate][targetId].isDone,
           };
-          get().todoList[fDate][id] = updatedTodo;
+          get().todoList[fDate][targetId] = updatedTodo;
           set((state) => ({ todoList: state.todoList }));
-          console.log(get().todoList);
+          console.log(get().todoList[fDate][targetId]);
         },
         updateDate: (clickedDate) => set(() => ({ selectedDate: clickedDate })),
       }),
