@@ -1,19 +1,22 @@
 import { Plus } from "lucide-react";
-import { Button } from "./ui/button";
-import { Input } from "./ui/input";
+import { Button } from "../ui/button";
+import { Input } from "../ui/input";
 import useTodoStore from "@/store/store";
 import { useState } from "react";
 import { convertToMMDD } from "@/utils/formatDate";
+import { useNavigate } from "react-router-dom";
 
 const Control = () => {
   const [newTodoText, setNewTodoText] = useState("");
+
+  const navigate = useNavigate();
 
   const addTodo = useTodoStore((state) => state.addTodo);
   const selectedDate = useTodoStore((state) => state.selectedDate);
 
   const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
-    newTodoText && addTodo(newTodoText);
+    newTodoText ? addTodo(newTodoText) : navigate("/todoForm");
     setNewTodoText("");
   };
 

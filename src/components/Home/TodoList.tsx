@@ -1,7 +1,7 @@
 import { convertToYMD } from "@/utils/formatDate";
-import useTodoStore from "../store/store";
-import { Checkbox } from "./ui/checkbox";
-import { Button } from "./ui/button";
+import useTodoStore from "../../store/store";
+import { Checkbox } from "../ui/checkbox";
+import { Button } from "../ui/button";
 import { Trash2Icon } from "lucide-react";
 
 const TodoList = () => {
