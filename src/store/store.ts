@@ -2,7 +2,13 @@ import { convertToYMD } from "@/utils/formatDate";
 import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
 
-const data = { "2024-05-01": [{ id: 0, todo: "first todo", isDone: true, date: new Date().getTime() }] };
+const data = {
+  "2024-05-01": [
+    { id: 0, todo: "first todo", isDone: true, date: new Date().getTime() },
+    { id: 1, todo: "sec todo", isDone: true, date: new Date().getTime() },
+  ],
+  "2024-05-03": [{ id: 0, todo: "first todo", isDone: true, date: new Date().getTime() }],
+};
 
 export interface ITodo {
   id: number;

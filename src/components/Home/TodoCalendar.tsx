@@ -12,6 +12,7 @@ const TodoCalendar = () => {
 
   useEffect(() => {
     date && updateDate(date);
+    console.log(Object.keys(todoList));
   }, [date]);
 
   return (
@@ -21,7 +22,7 @@ const TodoCalendar = () => {
           {new Date().getDate()}
         </Button>
       </div>
-      <Calendar toodList={todoList} mode="single" selected={date} onSelect={setDate} locale={ko} className="rounded-md border" />
+      <Calendar dateList={Object.keys(todoList)} mode="single" selected={date} onSelect={setDate} locale={ko} className="rounded-md border" />
     </div>
   );
 };
