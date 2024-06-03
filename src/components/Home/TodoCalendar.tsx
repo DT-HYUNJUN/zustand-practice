@@ -16,13 +16,15 @@ const TodoCalendar = () => {
   }, [date]);
 
   return (
-    <div className="">
+    <div>
       <div className="text-end mb-2">
         <Button onClick={() => setDate(new Date())} variant="outline" size="today">
           {new Date().getDate()}
         </Button>
       </div>
-      <Calendar dateList={Object.keys(todoList)} mode="single" selected={date} onSelect={setDate} locale={ko} className="rounded-md border" />
+      <div className="flex justify-center">
+        <Calendar dateList={Object.keys(todoList)} mode="single" selected={date} onSelect={setDate} locale={ko} className="rounded-md border" />
+      </div>
     </div>
   );
 };
